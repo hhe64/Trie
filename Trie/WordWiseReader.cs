@@ -1,0 +1,108 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+
+namespace Trie
+{
+    public class WordInfo
+    {
+        public string Word { get; set; }
+        public long StreamPosition { get; set; }
+
+        public override string ToString() { return $"{Word} [{StreamPosition}]"; }
+    }
+
+    internal class Enumerator : IEnumerator<WordInfo>
+    {
+        private StreamReader _streamReader;
+        private long _streamPosition;
+        private Stream _stream;
+        private long _charPosition;     // als Ersatz für _streamPosition die nicht funktiniert!
+
+        public Enumerator(Stream stream)
+        {
+            _stream = stream;
+            _streamReader = new StreamReader(_stream, Encoding.UTF8, false, 1024, true);
+
+            _stream.Seek(0, SeekOrigin.Begin);
+
+            // wegen verschachtelten for-Schleifen muss jeder Enumerator seine eigene stream-Position verwalten
+            _streamPosition = _stream.Position;
+            _charPosition = 0;
+        }
+
+        public WordInfo Current { get; set; }
+
+        object IEnumerator.Current => Current;
+
+        public void Dispose()
+        {
+            _streamReader.Dispose();
+        }
+
+        public bool MoveNext()
+        {
+            var sbword = new StringBuilder();
+
+            if (_stream.Position != _streamPosition)
+                _stream.Seek(_streamPosition, SeekOrigin.Begin);
+
+            if (_streamReader.EndOfStream)
+                return false;
+
+            // Füllzeichen überspringen:
+            while (!_streamReader.EndOfStream)
+            {
+                _charPosition++;
+                var c = (char)_streamReader.Read();
+                if (!char.IsLetterOrDigit(c) && c != '_') continue;
+                sbword.Append(c);
+                break;
+            }
+
+            // Wort bilden:
+            while (!_streamReader.EndOfStream)
+            {
+                _charPosition++;
+                var c = (char)_streamReader.Read();
+                if (char.IsLetterOrDigit(c) || c == '_') 
+                { 
+                    sbword.Append(c);
+                    continue;
+                }
+                break;
+            }
+
+            _streamPosition = _stream.Position;
+            Current = new WordInfo() { Word = sbword.ToString(), StreamPosition = _charPosition - /*_streamPosition*/ sbword.Length-1 };
+            return true;
+        }
+
+        public void Reset()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class WordWiseReader : IEnumerable<WordInfo>
+    {
+        private Stream _stream;
+
+        public WordWiseReader(Stream stream)
+        {
+            this._stream = stream;
+        }
+
+        public IEnumerator<WordInfo> GetEnumerator()
+        {
+            return new Enumerator(_stream);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+    }
+}
