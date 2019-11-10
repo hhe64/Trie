@@ -61,13 +61,14 @@ namespace Trie
             if (_stream.Position != _streamPosition)
                 _stream.Seek(_streamPosition, SeekOrigin.Begin);
 
-            int bytescount;
-            byte[] buffer = new byte[10];
+            long wordStartPosition=0;
             // Füllzeichen überspringen:
             CharInfo ci;
             while ((ci = ReadNextChar(_stream)).bytesRead > 0)
             {
                 if (!IsWordChar(ci.c)) continue;
+
+                wordStartPosition = _stream.Position-ci.bytesRead;
                 sbword.Append(ci.c);
                 break;
             }
@@ -93,7 +94,7 @@ namespace Trie
             }
 
             _streamPosition = _stream.Position;
-            Current = new WordInfo() { Word = sbword.ToString(), StreamPosition = _streamPosition - ci.bytesRead };
+            Current = new WordInfo() { Word = sbword.ToString(), StreamPosition = wordStartPosition };
             return true;
         }
 

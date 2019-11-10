@@ -1,4 +1,6 @@
-﻿namespace Trie
+﻿using System;
+
+namespace Trie
 {
     public class Trie
     {
@@ -7,6 +9,11 @@
         public Trie()
         {
             Root = new TrieNode();
+        }
+
+        internal void Insert(WordInfo word)
+        {
+            throw new NotImplementedException();
         }
     }
 }

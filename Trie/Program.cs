@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.IO;
+using System.Text;
 
 namespace Trie
 {
@@ -19,17 +23,43 @@ namespace Trie
             using (var stream = File.Open(textFile, FileMode.Open))
             {
                 var wordwise = new WordWiseReader(stream);
-                foreach (var word in wordwise)
-                {
-                    Console.WriteLine(word.ToString());
+                // Print(wordwise);
+                // ReadWordsFromStream(stream, wordwise);
 
-                    // Test verschachtelte Enumeratoren
-                    //var wordwise2 = new WordWiseReader(stream);
-                    //foreach (var word2 in wordwise2)
-                    //{
-                    //    Console.WriteLine("    "+word2.ToString());
-                    //}
+                Trie trie = TrieFromWords(wordwise);
+            }
+        }
+
+        private static Trie TrieFromWords(IEnumerable<WordInfo> wordwise)
+        {
+            var trie = new Trie();
+            foreach(var word in wordwise)
+            {
+                trie.Insert(word);
+            }
+        }
+
+        private static void ReadWordsFromStream(FileStream stream, WordWiseReader wordwise)
+        {
+            foreach(var word in wordwise)
+            {
+                stream.Seek(word.StreamPosition, SeekOrigin.Begin);
+                byte[] buffer = new byte[100];
+                stream.Read(buffer, 0, 20);
+                var s = Encoding.UTF8.GetString(buffer,0,20);
+                foreach (char nl in new char[]{'\r', '\n' })   {
+                    if (s.LastIndexOf(nl) < 0) break;
+                    s = s.Replace(nl, ' ');
                 }
+                Console.WriteLine(s);
+            }
+        }
+
+        private static void Print(WordWiseReader wordwise)
+        {
+            foreach(var word in wordwise)
+            {
+                Console.WriteLine(word.ToString());
             }
         }
     }
