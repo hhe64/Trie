@@ -12,8 +12,9 @@ namespace Trie
         static void Main(string[] args)
         {
             // string textFile = @"Dateien\LoreIpsum.txt";
-            string textFile = @"Dateien\LoreIpsum.de.txt";
-
+            // string textFile = @"Dateien\LoreIpsum.de.txt";
+            // string textFile = @"Dateien\KurzerText.txt";
+            string textFile = @"Dateien\VSCodeAufraeumarbeiten.txt";
 
             if (!File.Exists(textFile))
             {
@@ -22,24 +23,41 @@ namespace Trie
             }
             using (var stream = File.Open(textFile, FileMode.Open))
             {
-                var wordwise = new WordWiseReader(stream);
+                var wordwiseReader = new WordWiseReader(stream);
                 // Print(wordwise);
                 // ReadWordsFromStream(stream, wordwise);
 
-                Trie trie = TrieFromWords(wordwise);
+                Trie trie = TrieFromWords(wordwiseReader);
+                var allWords = trie.GetAllWords();
+
+                var wordPositions = trie.Find("Aktualisierungen");
+                wordPositions = trie.Find("die");
+
+                List<WordInfo> sortedByPosition = new List<WordInfo>();
+                foreach(var w in allWords)
+                {
+                    w.Value.ForEach(x => sortedByPosition.Add(new WordInfo() { Word = w.Key, StreamPosition = x }));
+                }
+                sortedByPosition.Sort((a, b) => a.StreamPosition.CompareTo(b.StreamPosition));
+
+                sortedByPosition.ForEach(x => Console.Write($"{x.Word} "));
+
+
+
             }
         }
 
-        private static Trie TrieFromWords(IEnumerable<WordInfo> wordwise)
+        private static Trie TrieFromWords(IEnumerable<WordInfo> words)
         {
             var trie = new Trie();
-            foreach(var word in wordwise)
+            foreach(var wordInfo in words)
             {
-                trie.Insert(word);
+                trie.Insert(wordInfo);
             }
+            return trie;
         }
 
-        private static void ReadWordsFromStream(FileStream stream, WordWiseReader wordwise)
+        private static void ShowWordSurroundings(FileStream stream, WordWiseReader wordwise)
         {
             foreach(var word in wordwise)
             {
@@ -48,14 +66,14 @@ namespace Trie
                 stream.Read(buffer, 0, 20);
                 var s = Encoding.UTF8.GetString(buffer,0,20);
                 foreach (char nl in new char[]{'\r', '\n' })   {
-                    if (s.LastIndexOf(nl) < 0) break;
+                    if (s.LastIndexOf(nl) < 0) continue;
                     s = s.Replace(nl, ' ');
                 }
                 Console.WriteLine(s);
             }
         }
 
-        private static void Print(WordWiseReader wordwise)
+        private static void PrintAllWords(WordWiseReader wordwise)
         {
             foreach(var word in wordwise)
             {

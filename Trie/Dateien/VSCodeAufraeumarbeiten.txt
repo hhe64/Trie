@@ -1,0 +1,26 @@
+﻿ Visual Studio Code: Aufräumarbeiten zum Vierzigsten
+
+Die Entwicklergemeinde von Visual Studio Code hat sich für Version 1.40 auf Aufräumarbeiten konzentriert und offene Issues beseitigt. 
+
+Microsoft hat Visual Studio Code 1.40 veröffentlicht. Da für das aktuelle Release des Sourcecodeeditors der Fokus auf dem Abarbeiten offener Issues lag, bleiben die Neuerungen überschaubar. Unter der Haube profitiert das Werkzeug von TypeScript 3.7 und Electron 6. Zu den nennenswerten Änderungen an der Oberfläche gehören eine anpassbare Größe der Minimap und nach Programmsprache konfigurierbare Zeilenendezeichen. Außerdem sollen unter anderem ein Indikator in der Activity Bar und farblich anpassbare Fensterrahmen die Übersicht verbessern.
+
+Nach der Veröffentlichung von Visual Studio Code 1.39 hatte das Team bereits in GitHub festgelegt, sich für das jetzt veröffentlichte Release auf das Abarbeiten von Issues zu konzentrieren. Die sogenannte Annual Issue House Keeping Iteration soll die anfallenden GitHub Issues und Pull Requests reduzieren. Dazu führt die Community ähnlich wie eine WG einen als "Issue Grooming Guide" geführten Aufräumplan. Immerhin konnte das Team insgesamt 4622 Issues schließen, denen allerdings 2195 gegenüberstehen, die im selben Zeitraum hinzukamen.
+Feinschliff für die Übersicht
+
+Angesichts der Aufräumarbeiten fehlen große Neuerungen im aktuellen Release. Nennenswert sind unter anderem einige Konfigurationsmöglichkeiten. So lässt sich in der Konfigurationsdatei über files.eol die Zeichensequenz für das Zeilenende für jede Programmiersprache einzeln festlegen. Als Standard gilt \n, und die Konfiguration gilt nur für neue Dateien. Für existierende greift weiterhin der Befehl Change End Of Line Sequence.
+
+Die Größe der Minimap, die einen Überblick über den Sourcecode innerhalb des Editorfensters anzeigt, lässt sich ebenfalls anpassen: Die Einstellung editor.minimap.scale erlaubt eine Reihe konstanter Werte zum Festlegen der Skalierung. Die neue Einstellung workbench.editor.splitSizing legt fest, ob die Workbench einzelne Fenster beim Splitten wie bisher gleichmäßig aufteilt oder das aktuelle Fenster in der Größe halbiert und die restlichen Fenster nicht verändert.
+
+Neu sind zudem die Farbkonfigurationen window.activeBorder und window.inactiveBorder, über die sich ein Rahmen um die einzelnen Fenster herum anzeigen lässt. Ersterer Wert legt eine Rahmenfarbe für das aktive Fenster und letzterer für die inaktiven fest. Um Rahmen anzuzeigen, müssen die Farben in einem Theme oder über die workbench.colorCustomizations angegeben sein, da sie nicht von anderen Werten erben.
+Aktivitäten und Tastatursteuerung
+
+Die Activity Bar hebt nun das aktive Element stärker hervor und nimmt gleichzeitig die inaktiven in der Farbgebung zurück. Die neue Einstellung gibt die Farbe für das aktive Element vor, die sich optional durch eine zusätzlich über activityBar.activeBackground einstellbare Hintergrundfarbe begleiten lässt.
+
+Zwei Ergänzungen sind vor allem für die Entwickler gedacht, die beim Arbeiten die Maus weitgehend meiden möchten. Sie können nun über die Tastenkombination Strg plus Richtungstasten Listen und Baumansichten vertikal und sofern vorgesehen auch horizontal scrollen. Der neue Befehl Show Definition Preview Hover zeigt detaillierte Informationen zu dem Bereich unter der Maus an und erweitert das bisherige Kommando Show Hover.
+Aufgefrischter Unterbau
+
+Unter der Haube bringt Visual Studio Code 1.40 gleich zwei Aktualisierungen mit: Das Electron-Framework 6.0 ist zwar bereits seit Ende Juli verfügbar, aber erst jetzt komplett in einem stabilen Release des Sourcecodeeditors enthalten. Derweil hat das Electron-Team bereits Ende Oktober Version 7 veröffentlicht, das jedoch wenige große Änderungen mitbringt. Es soll in Kürze die Grundlage für die Insider-Builds von Visual Studio Code bilden.
+
+Wie üblich setzt Visual Studio Code auf das jüngste TypeScript-Release, und Version 3.7 des JavaScript-Supersets hat mit Optional Chaining eine Ergänzung an Bord, die die VS-Code-Entwickler für ihre Codebasis verwenden. Wer selbst die Neuerungen von TypeScript 3.7 nutzen möchte, zu denen auch der Nullish-Coalescing-Operator gehört, muss die Erweiterung "JavaScript and TypeScript Nightly" installieren.
+
+Weitere Neuerungen und Details zu Visual Studio Code 1.40 lassen sich dem Blogbeitrag zur Veröffentlichung entnehmen. Der Sourcecodeeditor ist über heise Download für diverse Betriebssysteme verfügbar. Der Quellcode liegt auf GitHub. (rme)

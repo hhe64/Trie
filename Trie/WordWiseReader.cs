@@ -6,13 +6,6 @@ using System.Text;
 
 namespace Trie
 {
-    public class WordInfo
-    {
-        public string Word { get; set; }
-        public long StreamPosition { get; set; }
-
-        public override string ToString() { return $"{Word} [{StreamPosition}]"; }
-    }
 
     internal class Enumerator : IEnumerator<WordInfo>
     {
@@ -26,7 +19,6 @@ namespace Trie
                 bytesRead = 0;
             }
         }
-
 
         private long _streamPosition;
         private Stream _stream;

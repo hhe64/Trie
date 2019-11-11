@@ -6,10 +6,14 @@ namespace Trie
     {
         private string _text;
 
+        bool IsRoot => _text == "";
+
         public string Text
         {
             get { return _text; }
-            set { _text = value; }
+            set { 
+                _text = value; 
+            }
         }
         private List<TrieNode> _children;
 
@@ -19,18 +23,17 @@ namespace Trie
             set { _children = value; }
         }
 
-        private List<long> _occurences;
+        private List<long> _locations;
 
-        public List<long> Occurences
+        public List<long> Locations
         {
-            get { return _occurences; }
-            set { _occurences = value; }
+            get { return _locations; }
+            set { _locations = value; }
         }
 
         public TrieNode(string text)
         {
-
-            
+            Text = text;
         }
     }
 }
