@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{824D26F5-9052-4FF0-96BD-CDC7F7231B4A}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Trie</RootNamespace>
-    <AssemblyName>Trie</AssemblyName>
+    <RootNamespace>TrieLib</RootNamespace>
+    <AssemblyName>TrieLib</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

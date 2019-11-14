@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Trie
+namespace TrieLib
 {
     public class TrieTraverser
     {
@@ -20,6 +20,7 @@ namespace Trie
         {
             Traverse(Trie.Root, "", traverseAction);
         }
+
         private void Traverse(TrieNode node, string concatenated, Action<TrieNode, string> traverseAction)
         {
             string currentText = concatenated + node.Text;

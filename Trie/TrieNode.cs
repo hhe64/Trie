@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 
-namespace Trie
+namespace TrieLib
 {
     public class TrieNode
     {
         private string _text;
 
-        bool IsRoot => _text == "";
+        public bool IsRoot => _text == "";
+
+        public bool IsLeaf => BytePositions != null && BytePositions.Count > 0;
 
         public string Text
         {
@@ -23,12 +25,12 @@ namespace Trie
             set { _children = value; }
         }
 
-        private List<long> _locations;
+        private List<long> _bytePositions;
 
-        public List<long> Locations
+        public List<long> BytePositions
         {
-            get { return _locations; }
-            set { _locations = value; }
+            get { return _bytePositions; }
+            set { _bytePositions = value; }
         }
 
         public TrieNode(string text)

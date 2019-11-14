@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Trie
+namespace TrieLib
 {
 
     internal class Enumerator : IEnumerator<WordInfo>
@@ -24,11 +24,13 @@ namespace Trie
         private Stream _stream;
         private Encoding _encoding;
         private bool _endOfFile;
+        private long _charCount;
 
         public Enumerator(Stream stream, Encoding encoding)
         {
             _stream = stream;
             _encoding = encoding;
+            _charCount = 0;
             _stream.Seek(0, SeekOrigin.Begin);
 
             // wegen verschachtelten for-Schleifen muss jeder Enumerator seine eigene stream-Position verwalten
@@ -53,18 +55,19 @@ namespace Trie
             if (_stream.Position != _streamPosition)
                 _stream.Seek(_streamPosition, SeekOrigin.Begin);
 
-            long wordStartPosition=0;
+            long wordStartPosition = 0;
             // Füllzeichen überspringen:
             CharInfo ci;
             while ((ci = ReadNextChar(_stream)).bytesRead > 0)
             {
+                _charCount++;
                 if (!IsWordChar(ci.c)) continue;
 
-                wordStartPosition = _stream.Position-ci.bytesRead;
+                wordStartPosition = _stream.Position - ci.bytesRead;
                 sbword.Append(ci.c);
                 break;
             }
-            if (ci.bytesRead==0)
+            if (ci.bytesRead == 0)
             {
                 _endOfFile = true;
                 return false;
@@ -73,6 +76,7 @@ namespace Trie
             // Wort bilden:
             while ((ci = ReadNextChar(_stream)).bytesRead > 0)
             {
+                _charCount++;
                 if (IsWordChar(ci.c))
                 {
                     sbword.Append(ci.c);
@@ -86,7 +90,7 @@ namespace Trie
             }
 
             _streamPosition = _stream.Position;
-            Current = new WordInfo() { Word = sbword.ToString(), StreamPosition = wordStartPosition };
+            Current = new WordInfo() { Word = sbword.ToString(), StreamPosition = wordStartPosition, CharPosition = _charCount - 1 };
             return true;
         }
 

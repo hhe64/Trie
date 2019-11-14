@@ -5,7 +5,7 @@ using System.Linq;
 using System.IO;
 using System.Text;
 
-namespace Trie
+namespace TrieLib
 {
     class Program
     {
@@ -30,8 +30,8 @@ namespace Trie
                 Trie trie = TrieFromWords(wordwiseReader);
                 var allWords = trie.GetAllWords();
 
-                var wordPositions = trie.Find("Aktualisierungen");
-                wordPositions = trie.Find("die");
+                var wordPositions = trie.FindWord("Aktualisierungen");
+                wordPositions = trie.FindWord("die");
 
                 List<WordInfo> sortedByPosition = new List<WordInfo>();
                 foreach(var w in allWords)
@@ -41,9 +41,6 @@ namespace Trie
                 sortedByPosition.Sort((a, b) => a.StreamPosition.CompareTo(b.StreamPosition));
 
                 sortedByPosition.ForEach(x => Console.Write($"{x.Word} "));
-
-
-
             }
         }
 
@@ -52,7 +49,7 @@ namespace Trie
             var trie = new Trie();
             foreach(var wordInfo in words)
             {
-                trie.Insert(wordInfo);
+                trie.InsertWord(wordInfo);
             }
             return trie;
         }
