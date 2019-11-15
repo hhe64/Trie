@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows.Media;
 using TrieLib;
 
 namespace TrieWpf
@@ -8,7 +9,7 @@ namespace TrieWpf
     {
         public string FullText { get; set; }
         public string Text { get => IsRoot?"@ROOT":_trieNode.Text; }
-        public List<long> BytePositions { get => _trieNode.BytePositions; }
+        public List<WordPosition> BytePositions { get => _trieNode.WordPositions; }
 
         public bool IsRoot => _trieNode.IsRoot;
         public bool IsLeaf => _trieNode.IsLeaf;
@@ -38,6 +39,16 @@ namespace TrieWpf
                     nameToShow = nameToShow + $" [{FullText}]";
                 }
                 return nameToShow;
+            }
+        }
+        public Brush TreeItemForeground
+        {
+            get
+            {
+                return new SolidColorBrush()
+                {
+                    Color = IsLeaf ? Color.FromRgb(255, 0, 0) : Color.FromRgb(0, 0, 0),
+                };
             }
         }
     }

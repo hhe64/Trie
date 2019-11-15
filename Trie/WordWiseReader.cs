@@ -55,7 +55,7 @@ namespace TrieLib
             if (_stream.Position != _streamPosition)
                 _stream.Seek(_streamPosition, SeekOrigin.Begin);
 
-            long wordStartPosition = 0;
+            long wordBytePosition = 0;
             // Füllzeichen überspringen:
             CharInfo ci;
             while ((ci = ReadNextChar(_stream)).bytesRead > 0)
@@ -63,7 +63,7 @@ namespace TrieLib
                 _charCount++;
                 if (!IsWordChar(ci.c)) continue;
 
-                wordStartPosition = _stream.Position - ci.bytesRead;
+                wordBytePosition = _stream.Position - ci.bytesRead;
                 sbword.Append(ci.c);
                 break;
             }
@@ -90,7 +90,14 @@ namespace TrieLib
             }
 
             _streamPosition = _stream.Position;
-            Current = new WordInfo() { Word = sbword.ToString(), StreamPosition = wordStartPosition, CharPosition = _charCount - 1 };
+
+            Current = new WordInfo() { 
+                Word = sbword.ToString(), 
+                Position = new WordPosition() { 
+                    BytePos = wordBytePosition, 
+                    CharPos = _charCount - 1 
+                } 
+            };
             return true;
         }
 

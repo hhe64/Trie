@@ -8,7 +8,7 @@ namespace TrieLib
 
         public bool IsRoot => _text == "";
 
-        public bool IsLeaf => BytePositions != null && BytePositions.Count > 0;
+        public bool IsLeaf => WordPositions != null && WordPositions.Count > 0;
 
         public string Text
         {
@@ -25,12 +25,12 @@ namespace TrieLib
             set { _children = value; }
         }
 
-        private List<long> _bytePositions;
+        private List<WordPosition> _wordPosition;
 
-        public List<long> BytePositions
+        public List<WordPosition> WordPositions
         {
-            get { return _bytePositions; }
-            set { _bytePositions = value; }
+            get { return _wordPosition; }
+            set { _wordPosition = value; }
         }
 
         public TrieNode(string text)

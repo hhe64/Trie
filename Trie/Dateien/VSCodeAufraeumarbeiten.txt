@@ -1,4 +1,4 @@
-﻿ Visual Studio Code: Aufräumarbeiten zum Vierzigsten
+﻿Visual Studio Code: Aufräumarbeiten zum Vierzigsten
 
 Die Entwicklergemeinde von Visual Studio Code hat sich für Version 1.40 auf Aufräumarbeiten konzentriert und offene Issues beseitigt. 
 

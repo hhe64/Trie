@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TrieWpf"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="Trie - Struktur" Height="909" Width="1800" WindowStartupLocation="CenterScreen">
     <DockPanel>
@@ -138,10 +139,16 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
-                    <TreeView Grid.Row="0" ItemsSource="{Binding TrieTree}"  >
+                    <TreeView Name="TrieTreeView" Grid.Row="0" ItemsSource="{Binding TrieTree}"  >
+                        <b:Interaction.Triggers>
+                            <b:EventTrigger EventName="SelectedItemChanged">
+                                <b:InvokeCommandAction Command="{Binding TrieTreeSelectedItemChangedCommand}" CommandParameter="{Binding ElementName=TrieTreeView, Path=SelectedItem}"/>
+                            </b:EventTrigger>
+                        </b:Interaction.Triggers>
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate DataType="local:TrieTreeItem" ItemsSource="{Binding Children}">
-                                <TextBlock Text="{Binding NameToShow}"/>
+                                <TextBlock Foreground="{Binding TreeItemForeground}" Text="{Binding NameToShow}">
+                                </TextBlock>
                             </HierarchicalDataTemplate>
                         </TreeView.ItemTemplate>
                     </TreeView>

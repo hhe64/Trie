@@ -49,6 +49,7 @@
     <Compile Include="TrieNode.cs" />
     <Compile Include="TrieTraverser.cs" />
     <Compile Include="WordInfo.cs" />
+    <Compile Include="WordPosition.cs" />
     <Compile Include="WordWiseReader.cs" />
   </ItemGroup>
   <ItemGroup>

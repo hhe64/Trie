@@ -16,7 +16,7 @@ namespace TrieLib
 
         public void InsertWord(WordInfo wordInfo)
         {
-            InsertWord(new StringBuilder(wordInfo.Word.ToLower()), wordInfo.StreamPosition, Root);
+            InsertWord(new StringBuilder(wordInfo.Word.ToLower()), wordInfo.Position, Root);
         }
 
         private int GetMatch(string word, StringBuilder sbword)
@@ -29,14 +29,14 @@ namespace TrieLib
             return maxCount;
         }
 
-        private void InsertWord(StringBuilder sbword, long streamPosition, TrieNode parent)
+        private void InsertWord(StringBuilder sbword, WordPosition position,  TrieNode parent)
         {
             if (parent.Children == null) parent.Children = new List<TrieNode>();
 
             var found = parent.Children.Find(f => GetMatch(f.Text, sbword) > 0);
             if (found == null)
             {
-                parent.Children.Add(new TrieNode(sbword.ToString()) { BytePositions = new List<long>() { streamPosition } });
+                parent.Children.Add(new TrieNode(sbword.ToString()) { WordPositions = new List<WordPosition>() { position } });
                 return;
             }
 
@@ -45,20 +45,20 @@ namespace TrieLib
             {
                 if (matchCount == sbword.Length)
                 {
-                    if (found.BytePositions == null) found.BytePositions = new List<long>();
-                    found.BytePositions.Add(streamPosition);
+                    if (found.WordPositions == null) found.WordPositions = new List<WordPosition>();
+                    found.WordPositions.Add(position);
                 }
                 else
                 {
                     sbword.Remove(0, matchCount);
-                    InsertWord(sbword, streamPosition, found);
+                    InsertWord(sbword, position, found);
                 }
             }
             else if (matchCount == sbword.Length)
             {
                 parent.Children.Remove(found);
 
-                var n = new TrieNode(sbword.ToString()) { BytePositions = new List<long>() { streamPosition }, Children = new List<TrieNode>() };
+                var n = new TrieNode(sbword.ToString()) { WordPositions = new List<WordPosition>() { position }, Children = new List<TrieNode>() };
                 parent.Children.Add(n);
 
                 parent.Children.Remove(found);
@@ -76,28 +76,28 @@ namespace TrieLib
                 newparent.Children = new List<TrieNode>()
                 {
                     found,
-                    new TrieNode(sbword.Remove(0, matchCount).ToString()) { BytePositions = new List<long>() { streamPosition } },
+                    new TrieNode(sbword.Remove(0, matchCount).ToString()) { WordPositions = new List<WordPosition>() { position } },
                 };
             }
         }
 
-        public Dictionary<string, List<long>> GetAllWords()
+        public Dictionary<string, List<WordPosition>> GetAllWords()
         {
-            var allWords = new Dictionary<string, List<long>>();
+            var allWords = new Dictionary<string, List<WordPosition>>();
 
             var traverser = new TrieTraverser(this);
 
             traverser.Traverse((n, s) =>
             {
-                if ((n.BytePositions?.Count ?? 0) > 0)
+                if (n.IsLeaf)
                 {
-                    allWords[s] = n.BytePositions;
+                    allWords[s] = n.WordPositions;
                 }
             });
             return allWords;
         }
 
-        private List<long> FindWord(StringBuilder sbword, TrieNode parent)
+        private List<WordPosition> FindWord(StringBuilder sbword, TrieNode parent)
         {
             if (parent.Children == null) return null;
 
@@ -106,12 +106,12 @@ namespace TrieLib
 
             int match = GetMatch(found.Text, sbword);
 
-            if (match == sbword.Length && match == found.Text.Length) return found.BytePositions;
+            if (match == sbword.Length && match == found.Text.Length) return found.WordPositions;
 
             return FindWord(sbword.Remove(0, match), found);
         }
 
-        public List<long> FindWord(string word)
+        public List<WordPosition> FindWord(string word)
         {
             var sbword = new StringBuilder(word.ToLower());
 

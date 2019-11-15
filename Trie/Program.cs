@@ -36,9 +36,9 @@ namespace TrieLib
                 List<WordInfo> sortedByPosition = new List<WordInfo>();
                 foreach(var w in allWords)
                 {
-                    w.Value.ForEach(x => sortedByPosition.Add(new WordInfo() { Word = w.Key, StreamPosition = x }));
+                    w.Value.ForEach(x => sortedByPosition.Add(new WordInfo() { Word = w.Key, Position = x }));
                 }
-                sortedByPosition.Sort((a, b) => a.StreamPosition.CompareTo(b.StreamPosition));
+                sortedByPosition.Sort((a, b) => a.Position.CharPos.CompareTo(b.Position.CharPos));
 
                 sortedByPosition.ForEach(x => Console.Write($"{x.Word} "));
             }
@@ -58,7 +58,7 @@ namespace TrieLib
         {
             foreach(var word in wordwise)
             {
-                stream.Seek(word.StreamPosition, SeekOrigin.Begin);
+                stream.Seek(word.Position.BytePos, SeekOrigin.Begin);
                 byte[] buffer = new byte[100];
                 stream.Read(buffer, 0, 20);
                 var s = Encoding.UTF8.GetString(buffer,0,20);

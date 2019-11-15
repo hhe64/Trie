@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using TrieLib;
 
@@ -92,12 +93,19 @@ namespace TrieWpf
             SpeichernCommand = new CommandBase(SpeichernExecute, SpeichernCanExecute);
             VerlassenCommand = new CommandBase(VerlassenExecute, VerlassenCanExecute);
             MRUOpenCommand = new CommandBase(MRUOpenExecute, MRUOpenCanExecute);
-
             EmbeddedDocumentMouseDoubleClickCommand = new CommandBase(FoundItemMouseDoubleClickExecute, FoundItemMouseDoubleClickCanExecute);
-
+            TrieTreeSelectedItemChangedCommand = new RelayCommand<TrieTreeItem>(SelectTrieTreeItemChangedExecute, SelectTrieTreeItemChangedCanExecute);
             MRUMenuItems = LoadMruFiles();
+        }
 
+        private void SelectTrieTreeItemChangedExecute(TrieTreeItem item)
+        {
+            MessageBox.Show(item.FullText);
+        }
 
+        private bool SelectTrieTreeItemChangedCanExecute(TrieTreeItem item)
+        {
+            return item.IsLeaf;
         }
 
         MRUMenuItem NewMRUMenuItemFromFileName(string fileName)
@@ -260,6 +268,8 @@ namespace TrieWpf
             // UpdateTrieTree(Text);
         }
 
+
+
         private void UpdateTrieTreeFromFile(string textFile)
         {
             if (!File.Exists(textFile))
@@ -336,5 +346,6 @@ namespace TrieWpf
         public ICommand VerlassenCommand { get; private set; }
         public ICommand MRUOpenCommand { get; private set; }
         public ICommand EmbeddedDocumentMouseDoubleClickCommand { get; private set; }
+        public ICommand TrieTreeSelectedItemChangedCommand { get; private set; }
     }
 }
