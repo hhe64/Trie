@@ -20,7 +20,8 @@ namespace TrieWpf
         public ObservableCollection<TrieTreeItem> TrieTree
         {
             get { return _trieTree; }
-            set { 
+            set
+            {
                 _trieTree = value;
                 OnPropertyChanged();
             }
@@ -42,7 +43,8 @@ namespace TrieWpf
         public string Text
         {
             get { return _text; }
-            set { 
+            set
+            {
                 _text = value;
                 OnPropertyChanged();
             }
@@ -94,18 +96,34 @@ namespace TrieWpf
             VerlassenCommand = new CommandBase(VerlassenExecute, VerlassenCanExecute);
             MRUOpenCommand = new CommandBase(MRUOpenExecute, MRUOpenCanExecute);
             EmbeddedDocumentMouseDoubleClickCommand = new CommandBase(FoundItemMouseDoubleClickExecute, FoundItemMouseDoubleClickCanExecute);
-            TrieTreeSelectedItemChangedCommand = new RelayCommand<TrieTreeItem>(SelectTrieTreeItemChangedExecute, SelectTrieTreeItemChangedCanExecute);
+            TrieTreeSelectedItemChangedCommand = new RelayCommand<TrieTreeItem>(TrieTreeSelectedItemChangedExecute, TrieTreeSelectedItemChangedCanExecute);
+            FoundListSelectedItemChangedCommand = new RelayCommand<TrieTreeItem>(FoundListSelectedItemChangedExecute, FoundListSelectedItemChangedCanExecute);
             MRUMenuItems = LoadMruFiles();
         }
 
-        private void SelectTrieTreeItemChangedExecute(TrieTreeItem item)
+        private bool FoundListSelectedItemChangedCanExecute(TrieTreeItem arg)
         {
-            MessageBox.Show(item.FullText);
+            return true;
         }
 
-        private bool SelectTrieTreeItemChangedCanExecute(TrieTreeItem item)
+        private void FoundListSelectedItemChangedExecute(TrieTreeItem obj)
         {
-            return item.IsLeaf;
+            MessageBox.Show("Test");
+        }
+
+        private void TrieTreeSelectedItemChangedExecute(TrieTreeItem item)
+        {
+            FoundListItems.Clear();
+            if (!item.IsLeaf) return;
+            foreach (var pos in item.WordPositions)
+            {
+                FoundListItems.Add(new FoundListItem() { Position = pos, Text = item.FullText, SurroundingText = item.FullText });
+            }
+        }
+
+        private bool TrieTreeSelectedItemChangedCanExecute(TrieTreeItem item)
+        {
+            return true; // item.IsLeaf;
         }
 
         MRUMenuItem NewMRUMenuItemFromFileName(string fileName)
@@ -300,12 +318,12 @@ namespace TrieWpf
         {
             if (trieItem.Children == null) return;
             if (item.Children == null) item.Children = new ObservableCollection<TrieTreeItem>();
-            foreach(var trieChild in trieItem.Children)
+            foreach (var trieChild in trieItem.Children)
             {
                 var newText = fullText + trieChild.Text;
                 var newItem = new TrieTreeItem(trieChild, newText);
                 item.Children.Add(newItem);
-                CreateChildren(trieChild, newItem, newText );
+                CreateChildren(trieChild, newItem, newText);
             }
         }
 
@@ -347,5 +365,6 @@ namespace TrieWpf
         public ICommand MRUOpenCommand { get; private set; }
         public ICommand EmbeddedDocumentMouseDoubleClickCommand { get; private set; }
         public ICommand TrieTreeSelectedItemChangedCommand { get; private set; }
+        public ICommand FoundListSelectedItemChangedCommand { get; private set; }
     }
 }

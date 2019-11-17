@@ -60,6 +60,11 @@ namespace TrieLib
             CharInfo ci;
             while ((ci = ReadNextChar(_stream)).bytesRead > 0)
             {
+                // skip UTF-8 BOM 
+                if (_streamPosition==0 && ci.bytesRead==3 && ci.c==65279)
+                {
+                    continue;
+                }
                 _charCount++;
                 if (!IsWordChar(ci.c)) continue;
 
@@ -95,7 +100,7 @@ namespace TrieLib
                 Word = sbword.ToString(), 
                 Position = new WordPosition() { 
                     BytePos = wordBytePosition, 
-                    CharPos = _charCount - 1 
+                    CharPos = _charCount - sbword.Length- 1 
                 } 
             };
             return true;

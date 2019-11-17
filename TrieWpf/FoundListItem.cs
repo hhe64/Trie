@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using TrieLib;
 
 namespace TrieWpf
 {
     public class FoundListItem
     {
-        public int MyProperty { get; set; }
+        public string Text { get; set; }
+        public string SurroundingText { get; set; }
+        public WordPosition Position { get; set; }
+
     }
 }
