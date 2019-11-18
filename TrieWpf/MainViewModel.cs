@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using TrieLib;
@@ -97,18 +98,20 @@ namespace TrieWpf
             MRUOpenCommand = new CommandBase(MRUOpenExecute, MRUOpenCanExecute);
             EmbeddedDocumentMouseDoubleClickCommand = new CommandBase(FoundItemMouseDoubleClickExecute, FoundItemMouseDoubleClickCanExecute);
             TrieTreeSelectedItemChangedCommand = new RelayCommand<TrieTreeItem>(TrieTreeSelectedItemChangedExecute, TrieTreeSelectedItemChangedCanExecute);
-            FoundListSelectedItemChangedCommand = new RelayCommand<TrieTreeItem>(FoundListSelectedItemChangedExecute, FoundListSelectedItemChangedCanExecute);
+            FoundListSelectedItemChangedCommand = new RelayCommand<FoundListItem>(FoundListSelectedItemChangedExecute, FoundListSelectedItemChangedCanExecute);
             MRUMenuItems = LoadMruFiles();
         }
 
-        private bool FoundListSelectedItemChangedCanExecute(TrieTreeItem arg)
+        private bool FoundListSelectedItemChangedCanExecute(FoundListItem arg)
         {
             return true;
         }
 
-        private void FoundListSelectedItemChangedExecute(TrieTreeItem obj)
+        private void FoundListSelectedItemChangedExecute(FoundListItem foundItem)
         {
-            MessageBox.Show("Test");
+
+
+            MessageBox.Show($"Wort {foundItem.Text} an Stelle {foundItem.Position} geklickt");
         }
 
         private void TrieTreeSelectedItemChangedExecute(TrieTreeItem item)
@@ -117,8 +120,39 @@ namespace TrieWpf
             if (!item.IsLeaf) return;
             foreach (var pos in item.WordPositions)
             {
-                FoundListItems.Add(new FoundListItem() { Position = pos, Text = item.FullText, SurroundingText = item.FullText });
+                var wordSurrounding = GetWordSurrounding(pos);
+
+                FoundListItems.Add(new FoundListItem() { Position = pos, Text = item.FullText, SurroundingText = wordSurrounding });
             }
+        }
+
+        private string GetWordSurrounding(WordPosition wordPosition)
+        {
+            int startpos = (int)wordPosition.CharPos - 20;
+            if (startpos < 0) startpos = 0;
+            while (startpos > 0 && IsWordChar(Text[(int)startpos]))
+            {
+                startpos--;
+            }
+            int endpos = (int)wordPosition.CharPos;
+            for (; endpos < Text.Length; endpos++)
+            {
+                if (!IsWordChar(Text[endpos])) break;
+            }
+            endpos += 20;
+            if (endpos >= Text.Length) endpos = Text.Length;
+            while (endpos < Text.Length && IsWordChar(Text[endpos])) endpos++;
+
+            StringBuilder sb = new StringBuilder(Text.Substring(startpos, endpos - startpos));
+            // sb.Replace(Environment.NewLine, ".");
+            sb.Replace('\n', '.');
+            sb.Replace('\r', '.');
+
+            return sb.ToString();
+        }
+        private bool IsWordChar(char c)
+        {
+            return char.IsLetterOrDigit(c) || c == '_';
         }
 
         private bool TrieTreeSelectedItemChangedCanExecute(TrieTreeItem item)

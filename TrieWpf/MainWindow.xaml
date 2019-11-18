@@ -158,19 +158,19 @@
                               ShowsPreview="True"
                               ResizeDirection="Rows"
                               Height="5" Background="LightGray" />
-                    <ListView Grid.Row="2" ItemsSource="{Binding Path=FoundListItems}">
+                    <ListView Grid.Row="2" x:Name ="FoundListView" ItemsSource="{Binding Path=FoundListItems}">
                         <ListView.Resources>
                             <Style x:Key="hcs" TargetType="{x:Type GridViewColumnHeader}">
                                 <Setter Property="HorizontalContentAlignment" Value="Left"></Setter>
                             </Style>
                         </ListView.Resources>
+                        <b:Interaction.Triggers>
+                            <b:EventTrigger EventName="SelectionChanged">
+                                <b:InvokeCommandAction Command="{Binding FoundListSelectedItemChangedCommand}" CommandParameter="{Binding ElementName=FoundListView, Path=SelectedItem}"/>
+                            </b:EventTrigger>
+                        </b:Interaction.Triggers>
                         <ListView.View>
                             <GridView x:Name ="FoundGridView">
-                                <b:Interaction.Triggers>
-                                    <b:EventTrigger EventName="SelectedItemChanged">
-                                        <b:InvokeCommandAction Command="{Binding FoundListSelectedItemChangedCommand}" CommandParameter="{Binding ElementName=FoundGridView, Path=SelectedItem}"/>
-                                    </b:EventTrigger>
-                                </b:Interaction.Triggers>
                                 <GridViewColumn Header="Position" Width="Auto" HeaderContainerStyle="{StaticResource hcs}" >
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
@@ -178,7 +178,7 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="SurroundingText" Width="Auto" HeaderContainerStyle="{StaticResource hcs}" DisplayMemberBinding="{Binding Text}" >
+                                <GridViewColumn Header="SurroundingText" Width="Auto" HeaderContainerStyle="{StaticResource hcs}" DisplayMemberBinding="{Binding SurroundingText}" >
                                 </GridViewColumn>
                             </GridView>
                         </ListView.View>

@@ -14,7 +14,7 @@ namespace TrieWpf
             InitializeComponent();
             DataContext = new MainViewModel();
         }
-        // DoubleClick ist schwer direkt mit Command zu verdrahten, deshabl gehe über event:
+        // DoubleClick ist schwer direkt mit Command zu verdrahten, deshalb gehe über event:
         public void ListViewDblClick(object sender, MouseButtonEventArgs e)
         {
             var textBlock = sender as TextBlock;
