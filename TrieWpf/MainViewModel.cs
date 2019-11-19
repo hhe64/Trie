@@ -39,7 +39,7 @@ namespace TrieWpf
             }
         }
 
-        private string _text = "Sample Text";
+        private string _text = "";
 
         public string Text
         {
@@ -109,9 +109,11 @@ namespace TrieWpf
 
         private void FoundListSelectedItemChangedExecute(FoundListItem foundItem)
         {
-
-
             MessageBox.Show($"Wort {foundItem.Text} an Stelle {foundItem.Position} geklickt");
+            //var sbText = new StringBuilder(Text);
+            //sbText.Insert((int)foundItem.Position.CharPos, "<Bold>");
+            //sbText.Insert((int)foundItem.Position.CharPos+10, "</Bold>");
+            //Text = sbText.ToString();
         }
 
         private void TrieTreeSelectedItemChangedExecute(TrieTreeItem item)

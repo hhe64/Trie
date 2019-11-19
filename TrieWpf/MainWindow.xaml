@@ -22,7 +22,7 @@
                     </MenuItem.ItemContainerStyle>
                 </MenuItem>
                 <Separator />
-                <MenuItem Header="_Speichern" Command="{Binding SpeichernCommand}"/>
+                <!--<MenuItem Header="_Speichern" Command="{Binding SpeichernCommand}"/>-->
                 <Separator />
                 <MenuItem Header="_Verlassen" Command="{Binding VerlassenCommand}"/>
             </MenuItem>
@@ -71,9 +71,9 @@
                     </MenuItem.ItemContainerStyle>
                 </MenuItem>
             </Menu>
-            <Button Command="{Binding SpeichernCommand}" UseLayoutRounding="True" ToolTip="Datei speichern" >
+            <!--<Button Command="{Binding SpeichernCommand}" UseLayoutRounding="True" ToolTip="Datei speichern" >
                 <Image Source="Images/Save.png" Height="16"/>
-            </Button>
+            </Button>-->
             <Separator/>
         </ToolBar>
         <StatusBar DockPanel.Dock="Bottom">
@@ -112,7 +112,8 @@
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
                     <TextBox Grid.Row="0" Grid.Column="0"
-                        Text="{Binding Path=Text, Mode=TwoWay}"
+                        Text="{Binding Path=Text, Mode=OneWay}"
+                             IsReadOnly="True"
                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
                         ScrollViewer.VerticalScrollBarVisibility="Auto"
                         TextWrapping="Wrap"
