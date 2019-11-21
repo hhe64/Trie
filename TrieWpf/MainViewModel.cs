@@ -109,7 +109,7 @@ namespace TrieWpf
 
         private void FoundListSelectedItemChangedExecute(FoundListItem foundItem)
         {
-            MessageBox.Show($"Wort {foundItem.Text} an Stelle {foundItem.Position} geklickt");
+            // MessageBox.Show($"Wort {foundItem.Text} an Stelle {foundItem.Position} geklickt");
             //var sbText = new StringBuilder(Text);
             //sbText.Insert((int)foundItem.Position.CharPos, "<Bold>");
             //sbText.Insert((int)foundItem.Position.CharPos+10, "</Bold>");
