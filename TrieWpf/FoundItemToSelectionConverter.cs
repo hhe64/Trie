@@ -11,7 +11,7 @@ namespace TrieWpf
             var item = value as FoundListItem;
             if (item == null) return Binding.DoNothing;
 
-            return new SelectionSpecifier { SelectionStart = (int)item.Position.CharPos, SelectionLength = item.Text.Length };
+            return new SelectionPosition { StartIndex = (int)item.Position.CharPos, Length = item.Text.Length };
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -8,30 +8,30 @@ namespace TrieWpf
     {
 
 
-        public static SelectionSpecifier GetIndex(DependencyObject obj)
+        public static SelectionPosition GetSelectionPosition(DependencyObject obj)
         {
-            return (SelectionSpecifier)obj.GetValue(IndexProperty);
+            return (SelectionPosition)obj.GetValue(SelectionPositionProperty);
         }
 
-        public static void SetIndex(DependencyObject obj, SelectionSpecifier value)
+        public static void SetSelectionPosition(DependencyObject obj, SelectionPosition value)
         {
-            obj.SetValue(IndexProperty, value);
+            obj.SetValue(SelectionPositionProperty, value);
         }
 
-        // Using a DependencyProperty as the backing store for Index.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty IndexProperty =
-            DependencyProperty.RegisterAttached("Index", typeof(SelectionSpecifier), typeof(SetSelectionBehavior), new PropertyMetadata(null, OnIndexChanged));
+        // Using a DependencyProperty as the backing store for SelectionPosition.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SelectionPositionProperty =
+            DependencyProperty.RegisterAttached("SelectionPosition", typeof(SelectionPosition), typeof(SetSelectionBehavior), new PropertyMetadata(null, OnSelectionPositionChanged));
 
-        private static void OnIndexChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnSelectionPositionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var textbox = d as TextBox;
             if (textbox == null) return;
 
-            var idx = GetIndex(textbox);
+            var idx = GetSelectionPosition(textbox);
             if (idx == null) return;
 
-            textbox.SelectionLength = idx.SelectionLength;
-            textbox.SelectionStart = idx.SelectionStart;
+            textbox.SelectionStart = idx.StartIndex;
+            textbox.SelectionLength = idx.Length;
             textbox.Focus();
         }
     }

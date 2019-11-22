@@ -120,13 +120,13 @@
                              IsReadOnly="True"
                              IsInactiveSelectionHighlightEnabled="True"
                              SelectionBrush="Red"
-                             local:SetSelectionBehavior.Index="{Binding ElementName=FoundListView, Path=SelectedItem, Converter={StaticResource FoundItemToSelection}}"
-                            ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                            ScrollViewer.VerticalScrollBarVisibility="Auto"
-                            TextWrapping="Wrap"
-                            AcceptsReturn="True"
-				            FontFamily="Consolas"
-				            FontSize="10pt">
+                             local:SetSelectionBehavior.SelectionPosition="{Binding ElementName=FoundListView, Path=SelectedItem, Converter={StaticResource FoundItemToSelection}}"
+                             ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             TextWrapping="Wrap"
+                             AcceptsReturn="True"
+				             FontFamily="Consolas"
+				             FontSize="10pt">
                     </TextBox>
                     <GridSplitter Grid.Row="1" 
                               HorizontalAlignment="Stretch"

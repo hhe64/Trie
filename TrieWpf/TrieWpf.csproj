@@ -61,7 +61,7 @@
     <Compile Include="FoundItemToSelectionConverter.cs" />
     <Compile Include="FoundListItem.cs" />
     <Compile Include="RelayCommand.cs" />
-    <Compile Include="SelectionSpecifier.cs" />
+    <Compile Include="SelectionPosition.cs" />
     <Compile Include="SetSelectionBehavior.cs" />
     <Compile Include="TrieTreeItem.cs" />
     <Compile Include="WaitCursor.cs" />
